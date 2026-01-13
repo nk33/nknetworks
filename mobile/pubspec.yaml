@@ -1,0 +1,28 @@
+
+name: nk_networks_app
+publish_to: 'none'
+
+description: NK Networks Ltd app with WebView, WhatsApp messaging, and instant support flow.
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  webview_flutter: ^4.7.0
+  url_launcher: ^6.2.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/Canva logo 4.png
+    - assets/images/comp doc final e card.jpg
+    - assets/images/mcp logo.png
