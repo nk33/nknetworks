@@ -1,0 +1,50 @@
+
+name: Build Android APK (Debug)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile   # Build inside the mobile/ folder
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Flutter version
+        run: flutter --version
+
+      # Create Android scaffolding inside mobile/ (keeps your repo clean)
+      - name: Create Android project (Android only)
+        run: flutter create . --platforms=android
+
+      # webview_flutter requires Android SDK 24+, so we bump minSdkVersion
+      - name: Set minSdkVersion to 24
+        run: |
+          sed -i 's/minSdkVersion .*/minSdkVersion 24/' android/app/build.gradle
+
+      - name: Fetch packages
+        run: flutter pub get
+
+      - name: Build debug APK
+        run: flutter build apk --debug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nk-networks-app-debug-apk
+          path: mobile/build/app/outputs/apk/debug/app-debug.apk
